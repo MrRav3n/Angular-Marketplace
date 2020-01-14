@@ -1,8 +1,10 @@
+<h1 class="display-1 text-center mb-5">Promoted products</h1>
+<div  *ngFor="let product of products">
+  <div class="jumbotron" *ngIf="product.isPromoted">
+    <h1 class="display-4">{{product.title}}</h1>
+    <hr class="my-4">
+    <p class="lead">{{product.description}}</p>
+    <a class="btn btn-primary btn-lg" href="#" role="button">Check details</a>
+  </div>
+</div>
 
-  <h1>Proposed products</h1>
-  <span *ngFor="let product of products" >
-    <div class="text-center" *ngIf="product.isPromoted==true">
-      <h1>{{product.title}}</h1>
-      <p>{{product.description}}</p>
-    </div>
-  </span>
