@@ -3,4 +3,5 @@ export class Product {
   title: string;
   description: string;
   isPromoted: boolean;
+  category: string;
 }

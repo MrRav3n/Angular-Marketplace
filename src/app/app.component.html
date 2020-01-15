@@ -1,11 +1,4 @@
 <header>
-  <h1 class="text-center mt-3 display-2">Hi, Welcome at angular marketplace!</h1>
+  <h1 class="text-center pt-3 display-2 welcomeH1" routerLink="">Hi, Welcome at angular marketplace!</h1>
 </header>
-<div class="row mt-5 d-flex justify-content-around m-0">
-  <div class="col-6">
-  <app-promoted-products></app-promoted-products>
-  </div>
-  <div class="col-4">
-    <app-categories></app-categories>
-  </div>
-</div>
+<router-outlet></router-outlet>

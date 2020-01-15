@@ -1,4 +1,4 @@
 <h1 class="display-1 text-center mb-5">Categories</h1>
 <div class="bg-info rounded text-center" *ngFor="let category of categories">
-  <h1 class="display-4 font-weight-bold m-4">{{category.title}}</h1>
+  <h1 class="display-4 font-weight-bold m-4" routerLink="category/{{category.title}}">{{category.title}}</h1>
 </div>

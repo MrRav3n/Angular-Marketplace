@@ -1,3 +1,13 @@
 .jumbotron {
   background: gray;
 }
+.lead {
+  color: green;
+  font-size: 30px;
+  font-weight: bold;
+}
+.h1Product {
+  font-size:70px;
+  color: #fffcf8;
+  font-weight: bold;
+}
