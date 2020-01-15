@@ -1,5 +1,4 @@
 import { Product } from './product';
-import { Category } from './app/category';
 
 export const PRODUCTS: Product[] = [
   {

@@ -1,0 +1,13 @@
+  <div class="jumbotron m-3 mt-5">
+    <h1 class="display-4 h1Product p-3">{{product.title}} <span class="float-right ml-5">{{product.category}}</span></h1>
+    <hr class="my-4">
+    <p class="lead">{{product.description}}</p>
+    <br>
+    <br>
+    <hr class="my-4">
+    <h2>Id of product <span class="specialInfo">{{product.id}}</span></h2>
+    <h2>Category of product  <span class="specialInfo">{{product.category}}</span></h2>
+    <h2 *ngIf="product.isPromoted"> <span class="specialInfo">It is promoted</span></h2>
+    <h2 *ngIf="!product.isPromoted"> <span class="specialInfo">It is NOT promoted</span></h2>
+  </div>
+

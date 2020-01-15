@@ -7,6 +7,7 @@ import { PromotedProductsComponent } from './promoted-products/promoted-products
 import { CategoriesComponent } from './categories/categories.component';
 import { CategoryComponent } from './category/category.component';
 import { MainComponentComponent } from './main-component/main-component.component';
+import { SingleProductComponent } from './single-product/single-product.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { MainComponentComponent } from './main-component/main-component.componen
     PromotedProductsComponent,
     CategoriesComponent,
     CategoryComponent,
-    MainComponentComponent
+    MainComponentComponent,
+    SingleProductComponent
   ],
   imports: [
     BrowserModule,
