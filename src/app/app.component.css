@@ -5,11 +5,27 @@
   box-shadow: 0px 55px 51px 23px rgba(173,173,173,1);
   transition: all 0.5s ease-out;
 }
-.welcomeH1:hover {
+.welcomeH1 > h1 {
+  transition: all 0.5s ease-out;
+}
+h1:hover {
   font-size: 100px;
   cursor: pointer;
   text-decoration: none;
 }
-.welcomeH1:focus {
+.welcomeH1:focus >h1 {
   outline:0;
+}
+h1:focus {
+  outline:0;
+}
+.icon {
+
+  font-size:80px;
+  transition: all 0.5s ease-in-out;
+}
+.icon:hover {
+  cursor: pointer;
+  color: orange;
+  font-size:100px;
 }
