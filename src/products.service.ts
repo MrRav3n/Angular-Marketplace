@@ -9,7 +9,7 @@ import { Category } from './app/category';
   providedIn: 'root'
 })
 export class ProductsService {
-
+  cartItems: Product[] = [];
   constructor() { }
   getProducts(): Observable <Product[]> {
     return of(PRODUCTS);
@@ -19,6 +19,13 @@ export class ProductsService {
   }
   getCategories(): Observable<Category[]> {
     return of(CATEGORIES);
+  }
+  addToCart(product: Product) {
+    this.cartItems.push(product);
+  }
+  buyItems() {
+    this.cartItems = [];
+    window.alert('You bought it!');
   }
 
 }

@@ -29,3 +29,6 @@ h1:focus {
   color: orange;
   font-size:100px;
 }
+.icon:focus {
+  outline: none;
+}
