@@ -4,13 +4,15 @@ import { PRODUCTS } from './products-list';
 import {Observable, of} from 'rxjs';
 import { CATEGORIES } from './categories';
 import { Category } from './app/category';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
   cartItems: Product[] = [];
-  constructor() { }
+  constructor(private router: Router, private location: Location) { }
   getProducts(): Observable <Product[]> {
     return of(PRODUCTS);
   }
@@ -26,6 +28,16 @@ export class ProductsService {
   buyItems() {
     this.cartItems = [];
     window.alert('You bought it!');
+    this.refresh();
+  }
+  emptyCart() {
+    this.cartItems = [];
+    this.refresh();
+  }
+  refresh() {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([this.location.path()]);
+    });
   }
 
 }

@@ -1,5 +1,8 @@
 <h1 class="display-1 text-center mb-5 category sticky-top">Your items in the cart</h1>
 <button *ngIf="cartItems[0].title!=''" class="col-12 btn btn-danger p-2" (click)="buyItems()" >Buy all!</button>
+
+<button *ngIf="cartItems[0].title!=''" class="col-12 btn btn-warning p-2 mt-3" (click)="emptyCart()" >Empty cart</button>
+
 <div  *ngFor="let product of cartItems">
   <div class="jumbotron m-5">
     <h1 class="display-4 h1Product">{{product.title}} <span class="float-right ml-5">{{product.category}}</span></h1>
