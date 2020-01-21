@@ -9,6 +9,9 @@ import { CategoryComponent } from './category/category.component';
 import { MainComponentComponent } from './main-component/main-component.component';
 import { SingleProductComponent } from './single-product/single-product.component';
 import { CartComponent } from './cart/cart.component';
+import { HttpClientModule } from '@angular/common/http';
+import { UserPageComponent } from './user-page/user-page.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,12 +21,16 @@ import { CartComponent } from './cart/cart.component';
     CategoryComponent,
     MainComponentComponent,
     SingleProductComponent,
-    CartComponent
+    CartComponent,
+    UserPageComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

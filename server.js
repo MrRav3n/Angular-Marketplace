@@ -1,6 +1,10 @@
-import { Product } from './product';
+const express = require('express');
+const app = express();
 
-export const PRODUCTS: Product[] = [
+app.listen(3000, () => {
+  console.log('Server started')
+});
+products = [
   {
     id: 1,
     title: 'New Iphone',
@@ -37,3 +41,13 @@ export const PRODUCTS: Product[] = [
     category: 'House'
   }
 ];
+
+app.route('/api/products').get((req, res) => {
+  res.send(products);
+});
+
+app.route('/api/products/:product').get((req, res) => {
+  const id = req.params['product'];
+  console.log(products[id-1]);
+  res.send(products[id-1]);
+});

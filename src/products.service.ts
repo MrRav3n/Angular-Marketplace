@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Product } from './product';
-import { PRODUCTS } from './products-list';
 import {Observable, of} from 'rxjs';
 import { CATEGORIES } from './categories';
 import { Category } from './app/category';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
-  cartItems: Product[] = [];
-  constructor(private router: Router, private location: Location) { }
+  cartItems: Product[];
+  constructor(private router: Router, private location: Location, private http: HttpClient) { }
   getProducts(): Observable <Product[]> {
-    return of(PRODUCTS);
+    return this.http.get<Product[]>('http://localhost:3000/api/products');
   }
   getProduct(id: number): Observable<Product> {
-    return of(PRODUCTS.find(product => product.id === id));
+    return this.http.get<Product>(`http://localhost:3000/api/products/${id}`);
   }
   getCategories(): Observable<Category[]> {
     return of(CATEGORIES);

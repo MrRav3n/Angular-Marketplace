@@ -1,0 +1,6 @@
+.has-error  label, .has-error p{
+  color: red;
+}
+.has-error input {
+  border: 1px solid red;
+}
