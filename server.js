@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-
+const bodyParser = require('body-parser');
 app.listen(3000, () => {
   console.log('Server started')
 });
@@ -41,6 +41,8 @@ products = [
     category: 'House'
   }
 ];
+users = [];
+app.use(bodyParser.json());
 
 app.route('/api/products').get((req, res) => {
   res.send(products);
@@ -50,4 +52,18 @@ app.route('/api/products/:product').get((req, res) => {
   const id = req.params['product'];
   console.log(products[id-1]);
   res.send(products[id-1]);
+});
+
+app.route('/api/user/add').post((req, res) => {
+  if(req.body['check']) {
+    let email = req.body['email'];
+    let password = req.body['password'];
+    for(let i=0; i<users.length; i++) {
+      if(users[i].email === email) {
+        return;
+      }
+    }
+    users.push({email: email, password: password});
+    console.log(users);
+  }
 });

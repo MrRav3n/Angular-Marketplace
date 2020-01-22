@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import {timestamp} from 'rxjs/operators';
+import { ProductsService } from '../../products.service';
 
 @Component({
   selector: 'app-user-page',
@@ -10,7 +10,7 @@ import {timestamp} from 'rxjs/operators';
 export class UserPageComponent implements OnInit {
   userForm: FormGroup;
   submitted = false;
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private productsService: ProductsService ) { }
 
   ngOnInit() {
     this.userForm = this.formBuilder.group({
@@ -31,5 +31,11 @@ export class UserPageComponent implements OnInit {
 
   submit() {
     this.submitted = true;
+    if (this.userForm.invalid) {
+      return;
+    }
+    console.log(this.userForm.value);
+    this.productsService.register(this.userForm.value).subscribe();
+
   }
 }

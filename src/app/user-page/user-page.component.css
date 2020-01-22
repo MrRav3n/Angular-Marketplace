@@ -4,3 +4,10 @@
 .has-error input {
   border: 1px solid red;
 }
+.login {
+  transition: all 0.5s ease-in-out;
+}
+.login:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
