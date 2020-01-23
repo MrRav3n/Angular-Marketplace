@@ -11,8 +11,24 @@
   </div>
   <button type="submit" (click)="onSubmit()" class="btn btn-primary">Submit</button>
 </form>
-  <div class="d-flex justify-content-center row">
+  <div class="d-flex justify-content-center row" *ngIf="this.loginedUser">
   <div class="display-3 text-center text-danger col-12 m-3">Loggined</div>
-   <button class="btn-warning btn-lg btn" routerLink="/userPage/add">Add new product</button>
+   <button class="btn-warning btn-lg btn m-1" routerLink="/userPage/add">Add new product</button>
+   <button class="btn-info btn-lg btn m-1" (click)="addMoney()" [disabled]="!buttonEnabled">Earn some money!</button>
+    <div class="jumbotron col-12">
+      <h1 class="display-4">Hi {{this.loginedUser.email}}</h1>
+      <p class="lead">You currently have: {{this.loginedUser.money | currency}}</p>
+      <hr class="my-4">
+      <p class="text-center text-danger">List of all items you have</p>
+      <hr>
+      <div  *ngFor="let product of products">
+        <div class="jumbotron ">
+          <h1 class="display-4 h1Product">{{product.title}} - <span class="text-danger">{{product.price | currency}}</span> <span class="float-right ml-5">{{product.category}}</span></h1>
+          <hr class="my-4">
+          <p class="lead">{{product.description}}</p>
+          <a class="btn btn-warning btns btn-lg" href="#" role="button" routerLink="/products/{{product.id}}">Check details</a>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProductsService } from '../../products.service';
-import { Product } from '../../product';
+import { ProductsService } from '../products.service';
+import { Product } from '../product';
 
 @Component({
   selector: 'app-single-product',
@@ -26,7 +26,7 @@ export class SingleProductComponent implements OnInit {
     this.productService.addToCart(product);
   }
   buyItems() {
-    this.productService.buyItems();
+    this.productService.buyProduct(this.product, this.productService.loginedUser).subscribe();
   }
 
 }

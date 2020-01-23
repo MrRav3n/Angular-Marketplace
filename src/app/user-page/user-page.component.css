@@ -6,8 +6,12 @@
 }
 .login {
   transition: all 0.5s ease-in-out;
+  outline: none;
 }
 .login:hover {
   cursor: pointer;
   transform: scale(1.2);
+}
+.login:focus {
+  outline: none;
 }

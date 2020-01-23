@@ -6,4 +6,5 @@ export class Product {
   category: string;
   price: number;
   owner: string;
+  bought: boolean;
 }
