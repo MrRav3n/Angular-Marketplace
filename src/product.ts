@@ -4,4 +4,5 @@ export class Product {
   description: string;
   isPromoted: boolean;
   category: string;
+  price: number;
 }

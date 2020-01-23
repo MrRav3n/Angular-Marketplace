@@ -12,6 +12,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class ProductsService {
   cartItems: Product[];
+  loginedUser;
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
@@ -34,12 +35,18 @@ export class ProductsService {
     this.refresh();
   }
   register(user: any): Observable<any> {
-    return this.http.post<any>('http://localhost:3000/api/user/add', user, this.httpOptions);
     this.refresh();
+    return this.http.post<any>('http://localhost:3000/api/user/add', user, this.httpOptions);
   }
   emptyCart() {
     this.cartItems = [];
     this.refresh();
+  }
+  login(user: any): Observable<any> {
+    return this.http.post<any>('http://localhost:3000/api/user/login/', user, this.httpOptions);
+  }
+  addNewProduct(product: Product): Observable<Product> {
+    return this.http.post<Product>('http://localhost:3000/api/products/newproduct/add', product, this.httpOptions);
   }
   refresh() {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {

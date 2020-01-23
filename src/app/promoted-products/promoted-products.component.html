@@ -1,7 +1,7 @@
 <h1 class="display-1 text-center mb-5">Promoted products</h1>
 <div  *ngFor="let product of products">
   <div class="jumbotron" *ngIf="product.isPromoted">
-    <h1 class="display-4 h1Product">{{product.title}} <span class="float-right ml-5">{{product.category}}</span></h1>
+    <h1 class="display-4 h1Product">{{product.title}} - <span class="text-danger">{{product.price | currency}}</span><span class="float-right ml-5">{{product.category}}</span></h1>
     <hr class="my-4">
     <p class="lead">{{product.description}}</p>
     <a class="btn btn-warning btns btn-lg" href="#" role="button" routerLink="products/{{product.id}}">Check details</a>

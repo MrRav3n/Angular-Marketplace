@@ -19,7 +19,7 @@ export class SingleProductComponent implements OnInit {
 
   getProduct() {
     this.id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
-    console.log(this.id);
+
     this.productService.getProduct(this.id).subscribe(products => this.product = products);
   }
   addToCart(product: Product) {
