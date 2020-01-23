@@ -43,7 +43,7 @@ export class AddNewProductComponent implements OnInit {
     if (this.productForm.invalid) {
       return;
     }
-    this.productsService.addNewProduct(this.productForm.value).subscribe();
+    this.productsService.addNewProduct(this.productForm.value, this.productsService.loginedUser).subscribe();
   }
 
 }

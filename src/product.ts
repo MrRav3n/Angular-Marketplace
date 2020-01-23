@@ -5,4 +5,5 @@ export class Product {
   isPromoted: boolean;
   category: string;
   price: number;
+  owner: string;
 }

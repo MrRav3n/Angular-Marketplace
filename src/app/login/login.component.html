@@ -1,5 +1,5 @@
 <div class="container">
-<form [formGroup]="userForm">
+<form [formGroup]="userForm" *ngIf="!this.productsService.loginedUser">
   <div class="form-group" [ngClass]="{'has-error': isEmailCorrect()}">
     <label for="exampleInputEmail1">Email address</label>
     <input type="email" formControlName="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">

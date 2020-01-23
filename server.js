@@ -12,6 +12,7 @@ products = [
     isPromoted: true,
     category: 'IT',
     price: 2999,
+    owner: 'adam123@wp.pl'
   },
   {
     id: 2,
@@ -19,7 +20,8 @@ products = [
     description: 'Kinda good TV, BUY IT!',
     isPromoted: true,
     category: 'IT',
-    price: 1500
+    price: 1500,
+    owner: 'Zbyczek2115@wp.pl'
   },
   {
     id: 3,
@@ -27,7 +29,8 @@ products = [
     description: 'Just simple car',
     isPromoted: false,
     category: 'Car',
-    price: 20000
+    price: 20000,
+    owner: 'Czarny@wp.pl'
   },
   {
     id: 4,
@@ -36,6 +39,7 @@ products = [
     isPromoted: true,
     category: 'House',
     price: 130,
+    owner: 'Joanna@gmail.com'
   },
   {
     id: 5,
@@ -43,7 +47,8 @@ products = [
     description: 'Książka bardzo fajna',
     isPromoted: true,
     category: 'House',
-    price: 99
+    price: 99,
+    owner: 'Właściciel@02.pl'
   }
 ];
 users = [{
@@ -77,13 +82,19 @@ app.route('/api/user/add').post((req, res) => {
 app.route('/api/user/login').post((req, res) => {
   let email = req.body['email'];
   let password = req.body['password'];
-  for(let i=0; i<users.length; i++) {
-    if(users[i].email === email && users[i].password === password) {
-      res.send(users[i]);
+  let user = databaseCheck({email: email, password: password});
+  res.send(user);
+});
+function databaseCheck(user) {
+  for (let i = 0; i < users.length; i++) {
+    if (users[i].email === user.email && users[i].password === user.password) {
+      return users[i];
     }
   }
-});
+}
 app.route('/api/products/newproduct/add').post((req, res) => {
   let product = req.body;
-  products.push({id: products.length+1, title: product['name'], description: product['description'], isPromoted: product['check'], category: product['category'], price: product['price']})
+  if(databaseCheck(product[1])) {
+    products.push({id: products.length+1, title: product[0]['name'], description: product[0]['description'], isPromoted: product[0]['check'], category: product[0]['category'], price: product[0]['price'], owner: product[1].email})
+  }
 });

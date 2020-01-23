@@ -45,8 +45,8 @@ export class ProductsService {
   login(user: any): Observable<any> {
     return this.http.post<any>('http://localhost:3000/api/user/login/', user, this.httpOptions);
   }
-  addNewProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>('http://localhost:3000/api/products/newproduct/add', product, this.httpOptions);
+  addNewProduct(product: Product, user: any): Observable<Product> {
+    return this.http.post<Product>('http://localhost:3000/api/products/newproduct/add', [product, user], this.httpOptions);
   }
   refresh() {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {

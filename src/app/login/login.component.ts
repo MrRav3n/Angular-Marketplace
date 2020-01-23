@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit {
     this.productsService.login(this.userForm.value).subscribe(user => {
       this.productsService.loginedUser = user;
       this.loginedUser = user;
-      console.log(this.productsService.loginedUser);
     });
   }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ProductsService } from '../../products.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-page',
@@ -10,9 +11,10 @@ import { ProductsService } from '../../products.service';
 export class UserPageComponent implements OnInit {
   userForm: FormGroup;
   submitted = false;
-  constructor(private formBuilder: FormBuilder, private productsService: ProductsService ) { }
+  constructor(private formBuilder: FormBuilder, private productsService: ProductsService, private router: Router) { }
 
   ngOnInit() {
+    this.routeToLoggined();
     this.userForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(3)]],
@@ -36,6 +38,11 @@ export class UserPageComponent implements OnInit {
     }
     console.log(this.userForm.value);
     this.productsService.register(this.userForm.value).subscribe();
+  }
+  routeToLoggined() {
+    if (this.productsService.loginedUser) {
+      this.router.navigateByUrl('/userPage/login');
+    }
 
   }
 }
