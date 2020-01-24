@@ -19,11 +19,14 @@ export class SingleProductComponent implements OnInit {
 
   getProduct() {
     this.id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+    this.productService.getProduct(this.id).subscribe(products => {
+      this.product = products;
+    });
 
-    this.productService.getProduct(this.id).subscribe(products => this.product = products);
   }
-  addToCart(product: Product) {
-    this.productService.addToCart(product);
+  addToCart() {
+    console.log(this.product);
+    this.productService.addToCart(this.product);
   }
   buyItems() {
     this.productService.buyProduct(this.product, this.productService.loginedUser).subscribe();

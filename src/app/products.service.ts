@@ -12,7 +12,7 @@ import { User } from './user';
   providedIn: 'root'
 })
 export class ProductsService {
-  cartItems: Product[];
+  cartItems: Product[] = [];
   loginedUser: User = {
     email: '123@wp.pl',
     password: '123',
@@ -63,5 +63,8 @@ export class ProductsService {
   }
   buyProduct(product: Product, user: User): Observable<any> {
     return this.http.post<[Product, User]>(this.path + '/api/products/product/buy', [product, user], this.httpOptions);
+  }
+  buyAllProduct(product: Product[], user: User): Observable<any> {
+    return this.http.post<[Product[], User]>(this.path + '/api/products/product/buy/all', [product, user], this.httpOptions);
   }
 }

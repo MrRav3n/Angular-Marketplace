@@ -136,7 +136,7 @@ app.route('/api/user/addMoney').post((req, res) => {
   for (let i = 0; i < users.length; i++) {
     if (users[i].email === email) {
       users[i].money += 500;
-      console.log(users[i].money)
+      return;
     }
   }
 });
@@ -151,4 +151,29 @@ app.route('/api/products/product/buy').post((req, res) => {
   products[productId].bought = true;
   users[userId].money -= product[0].price;
   users[userId].ownedProducts.push(products[productId]);
+});
+
+app.route('/api/products/product/buy/all').post((req, res) => {
+  let product = req.body;
+  let productId = [];
+  let productsPrice = 0;
+
+  for(let i=0; i < product[0].length; i++) {
+    productId.push(databaseCheckProduct(product[0][i]));
+    productsPrice += product[0][i].price;
+    if(product[0][i].bought) return;
+  }
+
+  let userId = databaseCheckUserI(product[1]);
+  if (productsPrice > users[userId].money) {
+    return;
+  }
+  console.log(productsPrice);
+  for(let i=0; i < product[0].length; i++) {
+    products[productId[i]].owner = product[1].email;
+    products[productId[i]].bought = true;
+    users[userId].money -= product[0][i].price;
+    users[userId].ownedProducts.push(products[productId[i]]);
+  }
+
 });

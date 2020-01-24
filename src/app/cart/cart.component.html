@@ -1,5 +1,5 @@
 <h1 class="display-1 text-center mb-5 category sticky-top">Your items in the cart</h1>
-<button *ngIf="cartItems[0].title!=''" class="col-12 btn btn-danger p-2" (click)="buyItems()" >Buy all!</button>
+<button *ngIf="cartItems[0].title!=''" class="col-12 btn btn-danger p-2" (click)="buyAllItems()" >Buy all!</button>
 
 <button *ngIf="cartItems[0].title!=''" class="col-12 btn btn-warning p-2 mt-3" (click)="emptyCart()" >Empty cart</button>
 
@@ -11,5 +11,5 @@
     <a class="btn btn-warning btn-lg" href="#" role="button" routerLink="/products/{{product.id}}">Check details</a>
   </div>
 </div>
-<button *ngIf="cartItems[0].title!=''" class="col-12 btn btn-danger  mb-5" (click)="buyItems()" >Buy all!</button>
+<button *ngIf="cartItems[0].title!=''" class="col-12 btn btn-danger  mb-5" (click)="buyAllItems()" >Buy all!</button>
 
