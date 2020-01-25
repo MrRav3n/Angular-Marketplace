@@ -1,5 +1,5 @@
 <div class="container">
-<form [formGroup]="userForm" *ngIf="!this.productsService.loginedUser">
+<form [formGroup]="userForm" *ngIf="!this.productsService.loggedIn">
   <div class="form-group" [ngClass]="{'has-error': isEmailCorrect()}">
     <label for="exampleInputEmail1">Email address</label>
     <input type="email" formControlName="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
@@ -11,13 +11,13 @@
   </div>
   <button type="submit" (click)="onSubmit()" class="btn btn-primary">Submit</button>
 </form>
-  <div class="d-flex justify-content-center row" *ngIf="this.loginedUser">
-  <div class="display-3 text-center text-danger col-12 m-3">Loggined</div>
+  <div class="d-flex justify-content-center row" *ngIf="this.productsService.loggedIn">
+  <div class="display-3 text-center text-danger col-12 m-3">Logged in</div>
    <button class="btn-warning btn-lg btn m-1" routerLink="/userPage/add">Add new product</button>
    <button class="btn-info btn-lg btn m-1" (click)="addMoney()" [disabled]="!buttonEnabled">Earn some money!</button>
     <div class="jumbotron col-12">
-      <h1 class="display-4">Hi {{this.loginedUser.email}}</h1>
-      <p class="lead">You currently have: {{this.loginedUser.money | currency}}</p>
+      <h1 class="display-4">Hi {{this.productsService.loggedIn.email}}</h1>
+      <p class="lead">You currently have: {{this.productsService.loggedIn.money | currency}}</p>
       <hr class="my-4">
       <p class="text-center text-danger">List of all items you have</p>
       <hr>

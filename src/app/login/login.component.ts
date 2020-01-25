@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import {ProductsService} from '../products.service';
 import { Product } from '../product';
-import { timeout } from 'rxjs/operators';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -11,20 +11,20 @@ import { timeout } from 'rxjs/operators';
 export class LoginComponent implements OnInit {
   userForm: FormGroup;
   submit: boolean;
-  loginedUser;
   products: Product[];
   buttonEnabled = true;
   constructor(private formBuilder: FormBuilder, private productsService: ProductsService) { }
 
   ngOnInit() {
-    this.refresh();
-    this.getUserProducts();
     this.userForm = this.formBuilder.group(
       {
         password: ['', [Validators.required, Validators.minLength(3)]],
         email: ['', [Validators.required, Validators.email]],
       }
     );
+    if (this.productsService.loggedIn) {
+      this.getUserProducts();
+    }
   }
   isEmailCorrect() {
     return (this.submit && this.userForm.controls.email.errors != null);
@@ -41,9 +41,8 @@ export class LoginComponent implements OnInit {
     }, 2000);
   }
   refresh() {
-    this.productsService.login(this.productsService.loginedUser).subscribe(user => {
-      this.productsService.loginedUser = user;
-      this.loginedUser = user;
+    this.productsService.login(this.productsService.loggedIn).subscribe(user => {
+      this.productsService.loggedIn = user;
     });
   }
   onSubmit() {
@@ -52,17 +51,13 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.productsService.login(this.userForm.value).subscribe(user => {
-      this.productsService.loginedUser = user;
-      this.loginedUser = user;
+      this.productsService.loggedIn = user;
     });
   }
   getUserProducts() {
     this.productsService.getUserProducts().subscribe(products => {
       this.products = products;
-      console.log(this.products);
     });
   }
-
-
 
 }

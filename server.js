@@ -1,9 +1,21 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const validators = require('validator');
 app.listen(3000, () => {
   console.log('Server started')
 });
+categories = [
+  {
+    title: 'IT',
+  },
+  {
+    title: 'House',
+  },
+  {
+    title: 'Car',
+  },
+];
 products = [
   {
     id: 1,
@@ -63,21 +75,20 @@ users = [{
   money: 100,
 }];
 app.use(bodyParser.json());
-
 app.route('/api/products').get((req, res) => {
   res.send(products);
 });
-
 app.route('/api/products/:product').get((req, res) => {
   const id = req.params['product'];
   res.send(products[id-1]);
 });
-
 app.route('/api/user/add').post((req, res) => {
   if(req.body['check']) {
     let email = req.body['email'];
     let password = req.body['password'];
-    if (email == '' || password == '') {
+    let emailCheck = validators.isEmail(email);
+    let passwordCheck = validators.isLength(password, 3);
+    if (emailCheck && passwordCheck) {
       return;
     }
     for(let i=0; i<users.length; i++) {
@@ -85,7 +96,7 @@ app.route('/api/user/add').post((req, res) => {
         return;
       }
     }
-    users.push({email: email, password: password});
+    users.push({email: email, password: password, ownedProducts: [], money: 200});
   }
 });
 app.route('/api/user/login').post((req, res) => {
@@ -152,7 +163,9 @@ app.route('/api/products/product/buy').post((req, res) => {
   users[userId].money -= product[0].price;
   users[userId].ownedProducts.push(products[productId]);
 });
-
+app.route('/api/categories').get((req, res) => {
+  res.send(categories);
+});
 app.route('/api/products/product/buy/all').post((req, res) => {
   let product = req.body;
   let productId = [];
@@ -168,12 +181,10 @@ app.route('/api/products/product/buy/all').post((req, res) => {
   if (productsPrice > users[userId].money) {
     return;
   }
-  console.log(productsPrice);
   for(let i=0; i < product[0].length; i++) {
     products[productId[i]].owner = product[1].email;
     products[productId[i]].bought = true;
     users[userId].money -= product[0][i].price;
     users[userId].ownedProducts.push(products[productId[i]]);
   }
-
 });

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Product } from './product';
 import {Observable, of} from 'rxjs';
-import { CATEGORIES } from './categories';
 import { Category } from './category';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -13,12 +12,7 @@ import { User } from './user';
 })
 export class ProductsService {
   cartItems: Product[] = [];
-  loginedUser: User = {
-    email: '123@wp.pl',
-    password: '123',
-    money: 100,
-    ownedProducts: []
-  };
+  loggedIn: User;
   path = 'http://localhost:3000';
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -28,13 +22,13 @@ export class ProductsService {
     return this.http.get<Product[]>(this.path + '/api/products');
   }
   getUserProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.path + `/api/user/getProducts/${this.loginedUser.email}`);
+    return this.http.get<Product[]>(this.path + `/api/user/getProducts/${this.loggedIn.email}`);
   }
   getProduct(id: number): Observable<Product> {
     return this.http.get<Product>(this.path + `/api/products/${id}`);
   }
   getCategories(): Observable<Category[]> {
-    return of(CATEGORIES);
+    return this.http.get<Category[]>(this.path + '/api/categories/');
   }
   addToCart(product: Product) {
     this.cartItems.push(product);
@@ -59,7 +53,7 @@ export class ProductsService {
     });
   }
   addMoney(): Observable<any> {
-    return this.http.post(this.path + '/api/user/addMoney', this.loginedUser, this.httpOptions);
+    return this.http.post(this.path + '/api/user/addMoney', this.loggedIn, this.httpOptions);
   }
   buyProduct(product: Product, user: User): Observable<any> {
     return this.http.post<[Product, User]>(this.path + '/api/products/product/buy', [product, user], this.httpOptions);

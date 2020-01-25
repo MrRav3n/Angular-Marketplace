@@ -17,7 +17,7 @@ export class CartComponent implements OnInit {
     this.cartItems = this.productsService.cartItems;
   }
   buyAllItems() {
-    this.productsService.buyAllProduct(this.cartItems, this.productsService.loginedUser).subscribe();
+    this.productsService.buyAllProduct(this.cartItems, this.productsService.loggedIn).subscribe();
   }
   emptyCart() {
     this.productsService.emptyCart();

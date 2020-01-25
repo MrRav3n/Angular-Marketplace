@@ -40,7 +40,7 @@ export class UserPageComponent implements OnInit {
     this.productsService.register(this.userForm.value).subscribe();
   }
   routeToLoggined() {
-    if (this.productsService.loginedUser) {
+    if (this.productsService.loggedIn) {
       this.router.navigateByUrl('/userPage/login');
     }
 

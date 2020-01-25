@@ -25,11 +25,10 @@ export class SingleProductComponent implements OnInit {
 
   }
   addToCart() {
-    console.log(this.product);
     this.productService.addToCart(this.product);
   }
   buyItems() {
-    this.productService.buyProduct(this.product, this.productService.loginedUser).subscribe();
+    this.productService.buyProduct(this.product, this.productService.loggedIn).subscribe();
   }
 
 }
