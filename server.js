@@ -59,8 +59,8 @@ products = [
   },
   {
     id: 5,
-    title: 'Książka',
-    description: 'Książka bardzo fajna',
+    title: 'Book',
+    description: 'Cool book',
     isPromoted: true,
     category: 'House',
     price: 99,

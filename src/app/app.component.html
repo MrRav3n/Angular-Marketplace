@@ -1,13 +1,17 @@
 <header>
   <div class="welcomeH1 m-0 row">
-    <h1 class="text-center pt-3 display-2 col-7 pb-3 d-md-block d-none" routerLink="">
-    Angular Marketplace
-    </h1>
-    <h1 class="text-center pt-3 display-4 col-7 pb-3 d-block d-md-none" routerLink="">
+    <div class="col-md-7 d-none d-md-block">
+      <h1 class="text-center pt-3 display-2  pb-3 d-md-block d-none" routerLink="">
       Angular Marketplace
-    </h1>
-    <fa-icon routerLink="/cart" class="icon align-self-center col-2" [icon]="faShoppingCart"></fa-icon>
-    <fa-icon routerLink="/userPage" class="icon align-self-center col-2 ml-3" [icon]="faAddressCard"></fa-icon>
+      </h1>
+      <h1 class="text-center pt-3 display-4  pb-3 d-block d-md-none" routerLink="">
+        Angular Marketplace
+      </h1>
+    </div>
+    <div class="col-md-5 d-flex justify-content-around">
+      <fa-icon routerLink="/cart" class="icon align-self-center" [icon]="faShoppingCart"></fa-icon>
+      <fa-icon routerLink="/userPage" class="icon align-self-center ml-3" [icon]="faAddressCard"></fa-icon>
+    </div>
   </div>
 </header>
 <router-outlet></router-outlet>

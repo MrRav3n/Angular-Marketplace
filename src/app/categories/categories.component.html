@@ -1,5 +1,6 @@
 <div class="sticky-top">
-<h1 class="display-1 text-center mb-5">Categories</h1>
+<h1 class="display-1 text-center mb-5 d-none d-md-block">Categories</h1>
+<h1 class="display-3 text-center mb-5 d-block d-md-none">Categories</h1>
 <div class="category rounded text-center m-5" *ngFor="let category of categories">
   <h1 class="display-4 font-weight-bold " routerLink="category/{{category.title}}">{{category.title}}</h1>
 </div>

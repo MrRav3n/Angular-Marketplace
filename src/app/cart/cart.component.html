@@ -7,7 +7,7 @@
 </div>
 <div  *ngFor="let product of cartItems">
   <div class="jumbotron m-5">
-    <h1 class="display-4 h1Product">{{product.title}} <span class="float-right ml-5">{{product.category}}</span></h1>
+    <h1 class="display-4 h1Product">{{product.title}} <span class="float-right ml-5 d-none d-md-block">{{product.category}}</span></h1>
     <hr class="my-4">
     <p class="lead">{{product.description}}</p>
     <a class="btn btn-warning btn-lg" href="#" role="button" routerLink="/products/{{product.id}}">Check details</a>

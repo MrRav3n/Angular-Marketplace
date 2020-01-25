@@ -1,20 +1,19 @@
 <div class="container mt-5">
-<form [formGroup]="userForm">
+<form [formGroup]="userForm" class="userForm">
   <div class="form-group" [ngClass]="{'has-error': nameCheck()}">
     <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" formControlName="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+    <input type="email" class="form-control form-control-lg" formControlName="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
   </div>
   <div class="form-group" [ngClass]="{'has-error': passCheck()}">
     <label for="exampleInputPassword1">Password</label>
-    <input formControlName="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    <input formControlName="password" type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password">
   </div>
-  <div class="form-check" [ngClass]="{'has-error': checkCheck()}">
-    <input formControlName="check" type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label  class="form-check-label" for="exampleCheck1">I accept all rules</label>
+  <div [ngClass]="{'has-error': checkCheck()}">
+    <input type="checkbox" name="checkboxG4" id="checkboxG4" class="css-checkbox"><label for="checkboxG4" class="css-label">  I accept all rules</label>
   </div>
-  <button type="submit" class="btn btn-primary" (click)="submit()">Submit</button>
+  <button type="submit" class="btn btn-primary btn-lg" (click)="submit()">Submit</button>
 </form>
-  <h1 class="display-3 login text-center text-danger mt-5" routerLink="/userPage/login"> Already registered? Log in here!</h1>
+  <h1 class="display-4 login text-center text-danger mt-5" routerLink="/userPage/login"> Already registered? Log in here!</h1>
 </div>
 
