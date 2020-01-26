@@ -141,10 +141,13 @@ function databaseCheckProduct(product) {
 }
 app.route('/api/products/newproduct/add').post((req, res) => {
   let product = req.body;
-  if(databaseCheckUser(product[1])) {
-    products.push({id: products.length+1, title: product[0]['name'], description: product[0]['description'], isPromoted: product[0]['check'], category: product[0]['category'], price: product[0]['price'], owner: product[1].email})
-    res.send({message :'Product added'});
+  if(product[1]) {
+    if(databaseCheckUser(product[1])) {
+      products.push({id: products.length+1, title: product[0]['name'], description: product[0]['description'], isPromoted: product[0]['check'], category: product[0]['category'], price: product[0]['price'], owner: product[1].email})
+      res.send({message :'Product added'});
+    }
   }
+
   res.send({message :'Cannot add new product'});
 });
 app.route('/api/user/addMoney').post((req, res) => {

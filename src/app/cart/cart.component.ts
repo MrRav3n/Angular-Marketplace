@@ -9,6 +9,7 @@ import { Product } from '../product';
 })
 export class CartComponent implements OnInit {
   cartItems: Product[] = [];
+  res: string;
   constructor(private productsService: ProductsService) { }
   ngOnInit() {
     this.getProducts();
@@ -17,7 +18,11 @@ export class CartComponent implements OnInit {
     this.cartItems = this.productsService.cartItems;
   }
   buyAllItems() {
-    this.productsService.buyAllProduct(this.cartItems, this.productsService.loggedIn).subscribe();
+    this.productsService.buyAllProduct(this.cartItems, this.productsService.loggedIn).subscribe(res => {
+      this.res = res.message;
+      const elemement: HTMLElement = document.getElementById('clickButton') as HTMLElement;
+      elemement.click();
+    });
   }
   emptyCart() {
     this.productsService.emptyCart();
