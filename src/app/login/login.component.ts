@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   submit: boolean;
   products: Product[];
   buttonEnabled = true;
+  res;
   constructor(private formBuilder: FormBuilder, private productsService: ProductsService) { }
 
   ngOnInit() {
@@ -52,6 +53,7 @@ export class LoginComponent implements OnInit {
     }
     this.productsService.login(this.userForm.value).subscribe(user => {
       this.productsService.loggedIn = user;
+      this.getUserProducts();
     });
   }
   getUserProducts() {

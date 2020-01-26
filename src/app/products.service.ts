@@ -33,19 +33,18 @@ export class ProductsService {
   addToCart(product: Product) {
     this.cartItems.push(product);
   }
-  register(user: User): Observable<User> {
-    this.refresh();
-    return this.http.post<User>(this.path + '/api/user/add', user, this.httpOptions);
+  register(user: User): Observable<any> {
+    return this.http.post<any>(this.path + '/api/user/add', user, this.httpOptions);
   }
   emptyCart() {
     this.cartItems = [];
     this.refresh();
   }
-  login(user: User): Observable<User> {
-    return this.http.post<User>(this.path + '/api/user/login/', user, this.httpOptions);
+  login(user: User): Observable<any> {
+    return this.http.post<any>(this.path + '/api/user/login/', user, this.httpOptions);
   }
-  addNewProduct(product: Product, user: User): Observable<Product> {
-    return this.http.post<Product>(this.path + '/api/products/newproduct/add', [product, user], this.httpOptions);
+  addNewProduct(product: Product, user: User): Observable<any> {
+    return this.http.post<any>(this.path + '/api/products/newproduct/add', [product, user], this.httpOptions);
   }
   refresh() {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
@@ -56,9 +55,9 @@ export class ProductsService {
     return this.http.post(this.path + '/api/user/addMoney', this.loggedIn, this.httpOptions);
   }
   buyProduct(product: Product, user: User): Observable<any> {
-    return this.http.post<[Product, User]>(this.path + '/api/products/product/buy', [product, user], this.httpOptions);
+    return this.http.post<any>(this.path + '/api/products/product/buy', [product, user], this.httpOptions);
   }
   buyAllProduct(product: Product[], user: User): Observable<any> {
-    return this.http.post<[Product[], User]>(this.path + '/api/products/product/buy/all', [product, user], this.httpOptions);
+    return this.http.post<any>(this.path + '/api/products/product/buy/all', [product, user], this.httpOptions);
   }
 }

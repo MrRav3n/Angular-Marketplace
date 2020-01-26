@@ -88,15 +88,18 @@ app.route('/api/user/add').post((req, res) => {
     let password = req.body['password'];
     let emailCheck = validators.isEmail(email);
     let passwordCheck = validators.isLength(password, 3);
-    if (emailCheck && passwordCheck) {
+    if (!emailCheck && !passwordCheck) {
+      res.send({message :'Cannot register new user, check your email and password'});
       return;
     }
     for(let i=0; i<users.length; i++) {
       if(users[i].email === email) {
+        res.send({message : 'Cannot register new user, user is already in the database'});
         return;
       }
     }
     users.push({email: email, password: password, ownedProducts: [], money: 200});
+    res.send({message :'New user registered'});
   }
 });
 app.route('/api/user/login').post((req, res) => {
@@ -140,7 +143,9 @@ app.route('/api/products/newproduct/add').post((req, res) => {
   let product = req.body;
   if(databaseCheckUser(product[1])) {
     products.push({id: products.length+1, title: product[0]['name'], description: product[0]['description'], isPromoted: product[0]['check'], category: product[0]['category'], price: product[0]['price'], owner: product[1].email})
+    res.send({message :'Product added'});
   }
+  res.send({message :'Cannot add new product'});
 });
 app.route('/api/user/addMoney').post((req, res) => {
   let email = req.body['email'];
@@ -156,12 +161,14 @@ app.route('/api/products/product/buy').post((req, res) => {
   let productId = databaseCheckProduct(product[0]);
   let userId = databaseCheckUserI(product[1]);
   if (products[productId].price > users[userId].money || products[productId].bought === true) {
+    res.send({message :'Can`t buy new product'});
     return;
   }
   products[productId].owner = product[1].email;
   products[productId].bought = true;
   users[userId].money -= product[0].price;
   users[userId].ownedProducts.push(products[productId]);
+  res.send({message :'Bought new product'});
 });
 app.route('/api/categories').get((req, res) => {
   res.send(categories);
@@ -174,11 +181,15 @@ app.route('/api/products/product/buy/all').post((req, res) => {
   for(let i=0; i < product[0].length; i++) {
     productId.push(databaseCheckProduct(product[0][i]));
     productsPrice += product[0][i].price;
-    if(product[0][i].bought) return;
+    if(product[0][i].bought) {
+      res.send({message :'Can`t buy all products'});
+      return;
+    }
   }
 
   let userId = databaseCheckUserI(product[1]);
   if (productsPrice > users[userId].money) {
+    res.send({message :'Can`t buy all products'});
     return;
   }
   for(let i=0; i < product[0].length; i++) {
@@ -187,4 +198,5 @@ app.route('/api/products/product/buy/all').post((req, res) => {
     users[userId].money -= product[0][i].price;
     users[userId].ownedProducts.push(products[productId[i]]);
   }
+  res.send({message :'Bought all products'});
 });

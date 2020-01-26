@@ -11,6 +11,7 @@ import { Product } from '../product';
 export class SingleProductComponent implements OnInit {
   product: Product;
   id: number;
+  res: string;
   constructor(private activatedRoute: ActivatedRoute, private productService: ProductsService) { }
 
   ngOnInit() {
@@ -28,7 +29,11 @@ export class SingleProductComponent implements OnInit {
     this.productService.addToCart(this.product);
   }
   buyItems() {
-    this.productService.buyProduct(this.product, this.productService.loggedIn).subscribe();
+    this.productService.buyProduct(this.product, this.productService.loggedIn).subscribe(res => {
+      this.res = res.message;
+      const elemement: HTMLElement = document.getElementById('clickButton') as HTMLElement;
+      elemement.click();
+    });
   }
 
 }

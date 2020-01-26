@@ -12,6 +12,7 @@ export class AddNewProductComponent implements OnInit {
   categories: Category[];
   productForm: FormGroup;
   submited: boolean;
+  res;
   constructor(private productsService: ProductsService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -43,7 +44,11 @@ export class AddNewProductComponent implements OnInit {
     if (this.productForm.invalid) {
       return;
     }
-    this.productsService.addNewProduct(this.productForm.value, this.productsService.loggedIn).subscribe();
+    this.productsService.addNewProduct(this.productForm.value, this.productsService.loggedIn).subscribe(product => {
+      this.res = product.message;
+      const elemement: HTMLElement = document.getElementById('clickButton') as HTMLElement;
+      elemement.click();
+    });
   }
 
 }
