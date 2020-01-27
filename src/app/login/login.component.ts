@@ -52,6 +52,11 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.productsService.login(this.userForm.value).subscribe(user => {
+      if (!user) {
+        this.res = `Can't login new user`;
+        const elemement: HTMLElement = document.getElementById('clickButton') as HTMLElement;
+        elemement.click();
+      }
       this.productsService.loggedIn = user;
       this.getUserProducts();
     });

@@ -88,7 +88,7 @@ app.route('/api/user/add').post((req, res) => {
     let password = req.body['password'];
     let emailCheck = validators.isEmail(email);
     let passwordCheck = validators.isLength(password, 3);
-    if (!emailCheck && !passwordCheck) {
+    if (!emailCheck || !passwordCheck) {
       res.send({message :'Cannot register new user, check your email and password'});
       return;
     }
@@ -141,6 +141,14 @@ function databaseCheckProduct(product) {
 }
 app.route('/api/products/newproduct/add').post((req, res) => {
   let product = req.body;
+  if(product[0]['check']) {
+    let userId = databaseCheckUserI(product[1]);
+    if(users[userId].money<5) {
+      return;
+    }
+    users[userId].money -= 5;
+
+  }
   if(product[1]) {
     if(databaseCheckUser(product[1])) {
       products.push({id: products.length+1, title: product[0]['name'], description: product[0]['description'], isPromoted: product[0]['check'], category: product[0]['category'], price: product[0]['price'], owner: product[1].email})
@@ -148,7 +156,7 @@ app.route('/api/products/newproduct/add').post((req, res) => {
     }
   }
 
-  res.send({message :'Cannot add new product'});
+  res.end({message :'Cannot add new product'});
 });
 app.route('/api/user/addMoney').post((req, res) => {
   let email = req.body['email'];
@@ -167,6 +175,7 @@ app.route('/api/products/product/buy').post((req, res) => {
     res.send({message :'Can`t buy new product'});
     return;
   }
+
   products[productId].owner = product[1].email;
   products[productId].bought = true;
   users[userId].money -= product[0].price;

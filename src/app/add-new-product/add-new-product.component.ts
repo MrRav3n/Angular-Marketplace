@@ -39,6 +39,7 @@ export class AddNewProductComponent implements OnInit {
     return (this.submited && this.productForm.controls.price.errors != null);
   }
 
+
   submit() {
     this.submited = true;
     if (this.productForm.invalid) {
