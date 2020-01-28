@@ -2,8 +2,25 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const validators = require('validator');
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://MrRav3n:DAW100kr@cluster0-6xfty.mongodb.net/test?retryWrites=true&w=majority";
+
+const client = new MongoClient(uri, { useNewUrlParser: true });
+let collectionProducts;
+let collectionUsers;
+let collectionCategories;
+client.connect(err => {
+  collectionProducts = client.db("Shop").collection("products");
+  collectionUsers = client.db("Shop").collection("users");
+  collectionCategories = client.db("Shop").collection("categories");
+
+  });
+
+  // perform actions on the collection object
+
 app.listen(3000, () => {
   console.log('Server started')
+
 });
 categories = [
   {
@@ -75,12 +92,19 @@ users = [{
   money: 100,
 }];
 app.use(bodyParser.json());
-app.route('/api/products').get((req, res) => {
-  res.send(products);
+app.route('/api/products').get(async (req, res) => {
+  let response = [];
+  collectionProducts.find().toArray().then(items => {
+    items.forEach(item => response.push(item))
+    res.send(response);
+  });
 });
 app.route('/api/products/:product').get((req, res) => {
-  const id = req.params['product'];
-  res.send(products[id-1]);
+  const id = +req.params['product'];
+  collectionProducts.findOne({id: id}).then( item =>
+    res.send(item)
+  );
+
 });
 app.route('/api/user/add').post((req, res) => {
   if(req.body['check']) {
@@ -102,6 +126,7 @@ app.route('/api/user/add').post((req, res) => {
     res.send({message :'New user registered'});
   }
 });
+
 app.route('/api/user/login').post((req, res) => {
   let email = req.body['email'];
   let password = req.body['password'];
@@ -212,3 +237,4 @@ app.route('/api/products/product/buy/all').post((req, res) => {
   }
   res.send({message :'Bought all products'});
 });
+

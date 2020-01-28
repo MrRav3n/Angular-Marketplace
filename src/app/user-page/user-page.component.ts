@@ -37,7 +37,6 @@ export class UserPageComponent implements OnInit {
     }
     this.productsService.register(this.userForm.value).subscribe(res => {
       this.res = res.message;
-      console.log(this.res);
       const elemement: HTMLElement = document.getElementById('clickButton') as HTMLElement;
       elemement.click();
     });
@@ -46,6 +45,5 @@ export class UserPageComponent implements OnInit {
     if (this.productsService.loggedIn) {
       this.router.navigateByUrl('/userPage/login');
     }
-
   }
 }
