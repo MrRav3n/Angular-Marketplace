@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const validators = require('validator');
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://MrRav3n:DAW100kr@cluster0-6xfty.mongodb.net/test?retryWrites=true&w=majority";
-
+const await = require('await');
 const client = new MongoClient(uri, { useNewUrlParser: true });
 let collectionProducts;
 let collectionUsers;
@@ -15,8 +15,6 @@ client.connect(err => {
   collectionCategories = client.db("Shop").collection("categories");
 
   });
-
-  // perform actions on the collection object
 
 app.listen(3000, () => {
   console.log('Server started')
@@ -91,6 +89,7 @@ users = [{
   ownedProducts: [],
   money: 100,
 }];
+
 app.use(bodyParser.json());
 app.route('/api/products').get(async (req, res) => {
   let response = [];
@@ -106,6 +105,7 @@ app.route('/api/products/:product').get((req, res) => {
   );
 
 });
+// TODO: user add
 app.route('/api/user/add').post((req, res) => {
   if(req.body['check']) {
     let email = req.body['email'];
@@ -126,30 +126,23 @@ app.route('/api/user/add').post((req, res) => {
     res.send({message :'New user registered'});
   }
 });
-
-app.route('/api/user/login').post((req, res) => {
+app.route('/api/user/login').post(async (req, res) => {
   let email = req.body['email'];
   let password = req.body['password'];
-  let user = databaseCheckUser({email: email, password: password});
-  res.send(user);
+  databaseCheckUser({email: email, password: password}).then(result => res.send(result));
 });
 app.route('/api/user/getProducts/:email').get((req, res) => {
   const email = req.params['email'];
-  let id;
-  for (let i = 0; i < users.length; i++) {
-    if (users[i].email === email) {
-      id = i;
-    }
-  }
-  res.send(users[id].ownedProducts);
+  collectionUsers.findOne({email: email}).then(user => {
+    res.send(user.ownedProducts);
+  })
 });
 function databaseCheckUser(user) {
-  for (let i = 0; i < users.length; i++) {
-    if (users[i].email === user.email && users[i].password === user.password) {
-      return users[i];
-    }
-  }
+  return collectionUsers.findOne({email: user.email, password: user.password})
+
 }
+
+
 function databaseCheckUserI(user) {
   for (let i = 0; i < users.length; i++) {
     if (users[i].email === user.email && users[i].password === user.password) {
@@ -164,6 +157,7 @@ function databaseCheckProduct(product) {
     }
   }
 }
+// TODO: add products
 app.route('/api/products/newproduct/add').post((req, res) => {
   let product = req.body;
   if(product[0]['check']) {
@@ -185,13 +179,13 @@ app.route('/api/products/newproduct/add').post((req, res) => {
 });
 app.route('/api/user/addMoney').post((req, res) => {
   let email = req.body['email'];
-  for (let i = 0; i < users.length; i++) {
-    if (users[i].email === email) {
-      users[i].money += 500;
-      return;
-    }
-  }
+  collectionUsers.findOne({email: email}).then(item => {
+    collectionUsers.updateOne({email: email}, {$set: {
+        money: item.money+=500
+      }})
+  })
 });
+// TODO: buy product
 app.route('/api/products/product/buy').post((req, res) => {
   let product = req.body;
   let productId = databaseCheckProduct(product[0]);
@@ -208,8 +202,11 @@ app.route('/api/products/product/buy').post((req, res) => {
   res.send({message :'Bought new product'});
 });
 app.route('/api/categories').get((req, res) => {
-  res.send(categories);
+  collectionCategories.find().toArray().then(items => {
+    res.send(items);
+  })
 });
+//TODO : buy products
 app.route('/api/products/product/buy/all').post((req, res) => {
   let product = req.body;
   let productId = [];

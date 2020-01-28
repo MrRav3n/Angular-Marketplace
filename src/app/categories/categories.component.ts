@@ -15,7 +15,10 @@ export class CategoriesComponent implements OnInit {
     this.getCategories();
   }
   getCategories() {
-    this.productService.getCategories().subscribe(categories => this.categories = categories);
+    if (this.categories != []) {
+      this.productService.getCategories().subscribe(categories => this.categories = categories);
+    }
+
   }
 
 }

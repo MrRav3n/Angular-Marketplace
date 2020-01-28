@@ -8,7 +8,7 @@ import { Product } from '../product';
   styleUrls: ['./promoted-products.component.css']
 })
 export class PromotedProductsComponent implements OnInit {
-  products: Product[];
+  products: Product[] = [];
   constructor(private productsService: ProductsService) { }
 
   ngOnInit() {
@@ -16,7 +16,7 @@ export class PromotedProductsComponent implements OnInit {
   }
 
   getProducts() {
-    this.productsService.getProducts().subscribe(products => this.products = products);
+      this.productsService.getProducts().subscribe(products => this.products = products);
   }
 
 }
