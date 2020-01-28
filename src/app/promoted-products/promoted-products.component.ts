@@ -14,7 +14,6 @@ export class PromotedProductsComponent implements OnInit {
   ngOnInit() {
     this.getProducts();
   }
-
   getProducts() {
       this.productsService.getProducts().subscribe(products => this.products = products);
   }

@@ -89,23 +89,26 @@ users = [{
   ownedProducts: [],
   money: 100,
 }];
-
+let id;
 app.use(bodyParser.json());
 app.route('/api/products').get(async (req, res) => {
   let response = [];
   collectionProducts.find().toArray().then(items => {
-    items.forEach(item => response.push(item))
+    items.forEach(item => {
+      response.push(item);
+      id = item.id;
+    });
     res.send(response);
   });
 });
 app.route('/api/products/:product').get((req, res) => {
   const id = +req.params['product'];
-  collectionProducts.findOne({id: id}).then( item =>
-    res.send(item)
-  );
+  collectionProducts.findOne({id: id}).then( item => {
+      res.send(item);
+  });
 
 });
-// TODO: user add
+
 app.route('/api/user/add').post((req, res) => {
   if(req.body['check']) {
     let email = req.body['email'];
@@ -116,14 +119,18 @@ app.route('/api/user/add').post((req, res) => {
       res.send({message :'Cannot register new user, check your email and password'});
       return;
     }
-    for(let i=0; i<users.length; i++) {
-      if(users[i].email === email) {
+    console.log(email);
+    collectionUsers.findOne({email: email}).then(item => {
+      console.log(item);
+      if(item) {
         res.send({message : 'Cannot register new user, user is already in the database'});
         return;
       }
-    }
-    users.push({email: email, password: password, ownedProducts: [], money: 200});
-    res.send({message :'New user registered'});
+    }).then(e => {
+      collectionUsers.insertOne({email: email, password: password, ownedProducts: [], money: 200});
+      res.send({message :'New user registered'});
+    });
+
   }
 });
 app.route('/api/user/login').post(async (req, res) => {
@@ -151,26 +158,31 @@ function databaseCheckUserI(user) {
   }
 }
 function databaseCheckProduct(product) {
-  for (let i = 0; i < products.length; i++) {
-    if (products[i].id === product.id) {
-      return i;
-    }
-  }
+  return collectionProducts.findOne({id: product.id})
 }
-// TODO: add products
 app.route('/api/products/newproduct/add').post((req, res) => {
   let product = req.body;
   if(product[0]['check']) {
-    let userId = databaseCheckUserI(product[1]);
-    if(users[userId].money<5) {
-      return;
-    }
-    users[userId].money -= 5;
-
+    databaseCheckUser(product[1]).then(user => {
+      if(user.money < 5) {
+        res.send({message :'Can`t promote new product'});
+        return;
+      } else {
+        collectionUsers.updateOne({email: user.email}, {$set: {money: user.money-5}})
+      }
+    });
   }
   if(product[1]) {
     if(databaseCheckUser(product[1])) {
-      products.push({id: products.length+1, title: product[0]['name'], description: product[0]['description'], isPromoted: product[0]['check'], category: product[0]['category'], price: product[0]['price'], owner: product[1].email})
+      collectionProducts.insertOne({
+        id: id+1,
+        title: product[0]['name'],
+        description: product[0]['description'],
+        isPromoted: product[0]['check'],
+        category: product[0]['category'],
+        price: product[0]['price'],
+        owner: product[1].email
+      });
       res.send({message :'Product added'});
     }
   }
@@ -185,21 +197,34 @@ app.route('/api/user/addMoney').post((req, res) => {
       }})
   })
 });
-// TODO: buy product
 app.route('/api/products/product/buy').post((req, res) => {
   let product = req.body;
-  let productId = databaseCheckProduct(product[0]);
-  let userId = databaseCheckUserI(product[1]);
-  if (products[productId].price > users[userId].money || products[productId].bought === true) {
+  let productId;
+  let userId;
+  if(!product[1]) {
     res.send({message :'Can`t buy new product'});
     return;
   }
+  databaseCheckProduct(product[0]).then(item => {
+    productId = item;
+  }).then(e => {
+    collectionUsers.findOne({email: product[1].email}).then(item => {
+      userId = item;
+    }).then( e => {
+      if (productId.price > userId.money || productId.bought === true) {
+        res.send({message :'Can`t buy new product'});
+        return;
+      }
+      collectionProducts.updateOne({id: productId.id}, {$set: {owner: product[1].email, bought: true}});
+      collectionUsers.updateOne({email: userId.email}, {$set: {money: userId.money-product[0].price}});
+      collectionUsers.updateOne({email: userId.email}, {$push: {ownedProducts: productId}});
+      res.send({message :'Bought new product'});
+    });
+  });
 
-  products[productId].owner = product[1].email;
-  products[productId].bought = true;
-  users[userId].money -= product[0].price;
-  users[userId].ownedProducts.push(products[productId]);
-  res.send({message :'Bought new product'});
+
+
+
 });
 app.route('/api/categories').get((req, res) => {
   collectionCategories.find().toArray().then(items => {
