@@ -12,7 +12,7 @@ Back-end: Node.js v12.13.0
 
 Database: mongoDB 4.2.2
 
-##How to start
+## How to start
 
 Create mongoDB (can be local or in MongoDB ATLAS), pass your database url in the uri variable. At the top of `server.js` file you
 have example of items that can be pushed into the database.
