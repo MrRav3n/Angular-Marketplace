@@ -96,7 +96,6 @@ app.route('/api/products').get(async (req, res) => {
   collectionProducts.find().toArray().then(items => {
     items.forEach(item => {
       response.push(item);
-      id = item.id;
     });
     res.send(response);
   });
@@ -172,10 +171,12 @@ app.route('/api/products/newproduct/add').post((req, res) => {
       }
     });
   }
+
   if(product[1]) {
     if(databaseCheckUser(product[1])) {
+      collectionProducts.find({}, { sort: { _id: -1 }, limit: 1 }).toArray().then(e => {
       collectionProducts.insertOne({
-        id: id+1,
+        id: e[0].id+1,
         title: product[0]['name'],
         description: product[0]['description'],
         isPromoted: product[0]['check'],
@@ -183,12 +184,15 @@ app.route('/api/products/newproduct/add').post((req, res) => {
         price: product[0]['price'],
         owner: product[1].email
       });
-      res.send({message :'Product added'});
+        res.send({message :'Product added'});
+    });
     }
   }
 
-  res.end({message :'Cannot add new product'});
 });
+async function lastItem()  {
+  return await collectionProducts.find().limit(1).sort({$natural:-1});
+}
 app.route('/api/user/addMoney').post((req, res) => {
   let email = req.body['email'];
   collectionUsers.findOne({email: email}).then(item => {
@@ -217,14 +221,13 @@ app.route('/api/products/product/buy').post((req, res) => {
       }
       collectionProducts.updateOne({id: productId.id}, {$set: {owner: product[1].email, bought: true}});
       collectionUsers.updateOne({email: userId.email}, {$set: {money: userId.money-product[0].price}});
+      collectionUsers.findOne({email: productId.owner}).then( item => {
+        collectionUsers.updateOne({email: item.email}, {$set: {money: item.money+productId.price}});
+      });
       collectionUsers.updateOne({email: userId.email}, {$push: {ownedProducts: productId}});
       res.send({message :'Bought new product'});
     });
   });
-
-
-
-
 });
 app.route('/api/categories').get((req, res) => {
   collectionCategories.find().toArray().then(items => {
@@ -234,27 +237,40 @@ app.route('/api/categories').get((req, res) => {
 app.route('/api/products/product/buy/all').post((req, res) => {
   let product = req.body;
   let productId = [];
+  let productsWalue = [];
   let productsPrice = 0;
 
   for(let i=0; i < product[0].length; i++) {
-    productId.push(databaseCheckProduct(product[0][i]));
+    databaseCheckProduct(product[0][i]).then(item => {
+      productId.push(item);
+    });
     productsPrice += product[0][i].price;
     if(product[0][i].bought) {
       res.send({message :'Can`t buy all products'});
       return;
     }
   }
+  let userId;
+  databaseCheckUser(product[1]).then(user => {
+    userId = user;
+  }).then(e => {
+    if (productsPrice > userId.money) {
+      res.send({message :'Can`t buy all products'});
+      return;
+    }
+    collectionUsers.updateOne({email: userId.email}, {$set: {money: userId.money-productsPrice}});
+  }).then(async e => {
+    for(let i=0; i < product[0].length; i++) {
+      await collectionUsers.findOne({email: productId[i].owner}).then(async item => {
+        await collectionUsers.updateOne({email: item.email}, {$set: {money: item.money+productId[i].price}});
+      });
+    }
+    for(let i=0; i < product[0].length; i++) {
+      collectionUsers.updateOne({email: userId.email}, {$push: {ownedProducts: productId}});
+      collectionProducts.updateOne({id: productId[i].id}, {$set: {owner: userId.email, bought: false}});
+    }
+    res.send({message :'Bought all products'});
+  });
 
-  let userId = databaseCheckUserI(product[1]);
-  if (productsPrice > users[userId].money) {
-    res.send({message :'Can`t buy all products'});
-    return;
-  }
-  for(let i=0; i < product[0].length; i++) {
-    products[productId[i]].owner = product[1].email;
-    products[productId[i]].bought = true;
-    users[userId].money -= product[0][i].price;
-    users[userId].ownedProducts.push(products[productId[i]]);
-  }
-  res.send({message :'Bought all products'});
+
 });
