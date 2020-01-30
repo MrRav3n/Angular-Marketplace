@@ -13,7 +13,6 @@ export class CategoryComponent implements OnInit {
   category: string;
   products: Product[] = [];
   constructor(private activatedRoute: ActivatedRoute, private productsService: ProductsService) { }
-
   ngOnInit() {
     this.fetchData();
   }
@@ -21,5 +20,4 @@ export class CategoryComponent implements OnInit {
     this.category = this.activatedRoute.snapshot.paramMap.get('title');
     this.productsService.getProducts().subscribe(products => this.products = products);
   }
-
 }

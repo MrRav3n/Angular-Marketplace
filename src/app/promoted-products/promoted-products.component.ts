@@ -10,12 +10,10 @@ import { Product } from '../product';
 export class PromotedProductsComponent implements OnInit {
   products: Product[] = [];
   constructor(private productsService: ProductsService) { }
-
   ngOnInit() {
     this.getProducts();
   }
   getProducts() {
       this.productsService.getProducts().subscribe(products => this.products = products);
   }
-
 }

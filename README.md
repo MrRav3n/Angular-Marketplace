@@ -1,7 +1,7 @@
 # Angular Marketplace
 
-Shopping website that alows any user to add, sell and buy products. 
-Its main purpose is to show my abilities and knowledge. 
+Shopping website that alows users to add, sell and buy products. 
+
 
 
 ## Frameworks and technologies
@@ -14,7 +14,8 @@ Database: mongoDB 4.2.2
 
 ##How to start
 
-Create mongoDB (can be local or in MongoDB ATLAS), pass your database in uri variable
+Create mongoDB (can be local or in MongoDB ATLAS), pass your database url in the uri variable. At the top of `server.js` file you
+have example of items that can be pushed into the database.
 
 Start node.js server `node server.js`
 

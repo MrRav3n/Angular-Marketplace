@@ -13,7 +13,6 @@ export class SingleProductComponent implements OnInit {
   id: number;
   res: string;
   constructor(private activatedRoute: ActivatedRoute, private productService: ProductsService) { }
-
   ngOnInit() {
     this.getProduct();
   }
@@ -22,7 +21,6 @@ export class SingleProductComponent implements OnInit {
     this.productService.getProduct(this.id).subscribe(products => {
       this.product = products;
     });
-
   }
   addToCart() {
     this.productService.addToCart(this.product);
@@ -34,5 +32,4 @@ export class SingleProductComponent implements OnInit {
       elemement.click();
     });
   }
-
 }

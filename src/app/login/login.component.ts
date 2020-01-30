@@ -15,7 +15,6 @@ export class LoginComponent implements OnInit {
   buttonEnabled = true;
   res;
   constructor(private formBuilder: FormBuilder, private productsService: ProductsService) { }
-
   ngOnInit() {
     this.userForm = this.formBuilder.group(
       {
@@ -66,5 +65,4 @@ export class LoginComponent implements OnInit {
       this.products = products;
     });
   }
-
 }

@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const validators = require('validator');
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://MrRav3n:DAW100kr@cluster0-6xfty.mongodb.net/test?retryWrites=true&w=majority";
-const await = require('await');
 const client = new MongoClient(uri, { useNewUrlParser: true });
 let collectionProducts;
 let collectionUsers;
@@ -105,9 +104,7 @@ app.route('/api/products/:product').get((req, res) => {
   collectionProducts.findOne({id: id}).then( item => {
     res.send(item);
   });
-
 });
-
 app.route('/api/user/add').post((req, res) => {
   if(req.body['check']) {
     let email = req.body['email'];
@@ -147,15 +144,6 @@ function databaseCheckUser(user) {
   return collectionUsers.findOne({email: user.email, password: user.password})
 
 }
-
-
-function databaseCheckUserI(user) {
-  for (let i = 0; i < users.length; i++) {
-    if (users[i].email === user.email && users[i].password === user.password) {
-      return i;
-    }
-  }
-}
 function databaseCheckProduct(product) {
   return collectionProducts.findOne({id: product.id})
 }
@@ -171,7 +159,6 @@ app.route('/api/products/newproduct/add').post((req, res) => {
       }
     });
   }
-
   if(product[1]) {
     if(databaseCheckUser(product[1])) {
       collectionProducts.find({}, { sort: { _id: -1 }, limit: 1 }).toArray().then(e => {
@@ -188,11 +175,7 @@ app.route('/api/products/newproduct/add').post((req, res) => {
     });
     }
   }
-
 });
-async function lastItem()  {
-  return await collectionProducts.find().limit(1).sort({$natural:-1});
-}
 app.route('/api/user/addMoney').post((req, res) => {
   let email = req.body['email'];
   collectionUsers.findOne({email: email}).then(item => {
@@ -237,9 +220,7 @@ app.route('/api/categories').get((req, res) => {
 app.route('/api/products/product/buy/all').post((req, res) => {
   let product = req.body;
   let productId = [];
-  let productsWalue = [];
   let productsPrice = 0;
-
   for(let i=0; i < product[0].length; i++) {
     databaseCheckProduct(product[0][i]).then(item => {
       productId.push(item);
@@ -267,10 +248,8 @@ app.route('/api/products/product/buy/all').post((req, res) => {
     }
     for(let i=0; i < product[0].length; i++) {
       collectionUsers.updateOne({email: userId.email}, {$push: {ownedProducts: productId}});
-      collectionProducts.updateOne({id: productId[i].id}, {$set: {owner: userId.email, bought: false}});
+      collectionProducts.updateOne({id: productId[i].id}, {$set: {owner: userId.email, bought: true}});
     }
     res.send({message :'Bought all products'});
   });
-
-
 });

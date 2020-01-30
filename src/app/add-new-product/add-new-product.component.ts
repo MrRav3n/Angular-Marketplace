@@ -14,7 +14,6 @@ export class AddNewProductComponent implements OnInit {
   submited: boolean;
   res;
   constructor(private productsService: ProductsService, private formBuilder: FormBuilder) { }
-
   ngOnInit() {
     this.productForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -38,8 +37,6 @@ export class AddNewProductComponent implements OnInit {
   isPriceCorrect() {
     return (this.submited && this.productForm.controls.price.errors != null);
   }
-
-
   submit() {
     this.submited = true;
     if (this.productForm.invalid) {
@@ -51,5 +48,4 @@ export class AddNewProductComponent implements OnInit {
       elemement.click();
     });
   }
-
 }
