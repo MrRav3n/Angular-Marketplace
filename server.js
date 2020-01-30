@@ -14,7 +14,7 @@ client.connect(err => {
   collectionUsers = client.db("Shop").collection("users");
   collectionCategories = client.db("Shop").collection("categories");
 
-  });
+});
 
 app.listen(3000, () => {
   console.log('Server started')
@@ -104,7 +104,7 @@ app.route('/api/products').get(async (req, res) => {
 app.route('/api/products/:product').get((req, res) => {
   const id = +req.params['product'];
   collectionProducts.findOne({id: id}).then( item => {
-      res.send(item);
+    res.send(item);
   });
 
 });
@@ -231,7 +231,6 @@ app.route('/api/categories').get((req, res) => {
     res.send(items);
   })
 });
-//TODO : buy products
 app.route('/api/products/product/buy/all').post((req, res) => {
   let product = req.body;
   let productId = [];
@@ -259,4 +258,3 @@ app.route('/api/products/product/buy/all').post((req, res) => {
   }
   res.send({message :'Bought all products'});
 });
-
